@@ -1,0 +1,30 @@
+//To use, create a user in:
+//Jenkins > Credentials > System > Global credentials 
+//
+//Example:
+//Kind: ssh username with private key
+//ID: skidamien_github
+//username: skidamien_github
+//Private Key: <PRIVATE KEY with access to the repo you are cloning>
+
+pipeline {
+  agent any
+ 
+  stages {
+    stage ('git clone test') {
+        steps {
+          cleanWs()
+          git(
+            url: 'git@github.com:skidamien/JenkinsPipelineSnippets.git',
+            credentialsId: 'skidamien_github',
+            branch: 'master'
+          )
+          script {
+            sh '''
+              ls -l
+            '''
+          }
+        }
+    }     
+  }    
+}   
