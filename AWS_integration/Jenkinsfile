@@ -1,0 +1,35 @@
+//Plugins needed to be installed:
+//AWS Steps
+//Amazon Web Services SDK
+//CloudBees AWS Credentials
+//CloudBees Credentials Plugin
+//Credentials Binding plugin
+//Plain Credentials plugin
+//
+//On your Jenkins servers, the AWS cli needs to be installed
+//example, debian: sudo apt-get install awscli
+//
+//Create a credential:
+//Quick Example
+//navigate to Jenkinss > Credentials > System > Global credentials (unrestricted)
+//click Add Credentials, kind AWS credentials
+
+pipeline {
+  agent any
+ 
+  stages {
+    stage ('AWS test') {
+        steps {
+            cleanWs()
+            script {
+              sh '''
+                ls
+              '''
+            }
+            withAWS(credentials: 'aws-damien', region: 'us-east-1') {
+              sh 'aws iam get-user'
+            }
+        }
+    }
+  }
+}
